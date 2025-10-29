@@ -1,0 +1,52 @@
+name: Publish Go Module
+
+on:
+  push:
+    tags:
+      - 'v*.*.*' # Запускати тільки при створенні тегу, напр. v1.2.3
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout contracts repository
+        uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.25'
+
+      - name: Set up Buf
+        uses: bufbuild/buf-setup-action@v1
+
+      - name: Generate Go code from Protobuf
+        run: buf generate
+
+      - name: Push generated code to nexus-contracts-go
+        run: |
+          # Налаштовуємо Git з токеном для аутентифікації
+          git config --global user.email "actions@github.com"
+          git config --global user.name "GitHub Actions"
+          
+          # Клонуємо репозиторій для згенерованого коду
+          git clone https://${{ secrets.GH_PAT }}@github.com/nexus-commerce/nexus-contracts-go.git ../nexus-contracts-go
+          
+          # Копіюємо згенерований код, замінюючи старий
+          # 'gen/go' - це шлях, куди buf згенерував код, вказаний у buf.gen.yaml
+          cp -r gen/go/* ../nexus-contracts-go/
+          
+          cd ../nexus-contracts-go
+          
+          # Якщо змін немає, виходимо
+          if git diff --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+          
+          # Створюємо та пушимо коміт і тег
+          git add .
+          git commit -m "Update generated Go module to version ${{ github.ref_name }}"
+          git tag ${{ github.ref_name }} # Створюємо такий самий тег, як і в contracts
+          git push origin main
+          git push origin ${{ github.ref_name }}
