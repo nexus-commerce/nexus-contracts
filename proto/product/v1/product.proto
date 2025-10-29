@@ -1,0 +1,103 @@
+syntax = "proto3";
+
+option go_package = "gen/v1/product";
+
+import "google/api/annotations.proto";
+import "google/protobuf/field_mask.proto";
+
+package product.v1;
+
+service ProductCatalogService {
+  rpc GetProduct(GetProductRequest) returns (GetProductResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/products/{id}"
+    };
+  };
+  rpc ListProducts(ListProductsRequest) returns (ListProductsResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/products"
+    };
+  };
+  rpc CreateProduct(CreateProductRequest) returns (CreateProductResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/products"
+      body: "product"
+    };
+  };
+  rpc UpdateProduct(UpdateProductRequest) returns (UpdateProductResponse) {
+    option (google.api.http) = {
+      patch: "/api/v1/products/{id}"
+      body: "*"
+    };
+  };
+  rpc DeleteProduct(DeleteProductRequest) returns (DeleteProductResponse) {
+    option (google.api.http) = {
+      delete: "/api/v1/products/{id}"
+    };
+  };
+  rpc GetProductBySKU(GetProductBySKURequest) returns (GetProductBySKUResponse);
+}
+
+message Product {
+  string id = 1;
+  string sku = 2;
+  string name = 3;
+  string description = 4;
+  double price = 5;
+  int32 stock_quantity = 7;
+  string category = 8;
+  string image_url = 9;
+  map<string, string> attributes = 10;
+  bool is_active = 11;
+}
+
+message GetProductRequest {
+  string id = 1 ;
+}
+
+message GetProductResponse {
+  Product product = 1;
+}
+
+message ListProductsRequest {
+  string filter = 1;
+  int32 page = 2;
+  int32 page_size = 3;
+}
+
+message ListProductsResponse {
+  repeated Product products = 1;
+  int32 next_page = 2;
+}
+
+message CreateProductRequest {
+  Product product = 1;
+}
+
+message CreateProductResponse {
+  Product product =1;
+}
+
+message UpdateProductRequest {
+  Product product = 1;
+  google.protobuf.FieldMask update_mask = 2;
+  string id = 3;
+}
+
+message UpdateProductResponse {
+  Product product = 1;
+}
+
+message  DeleteProductRequest {
+  string id = 1;
+}
+
+message DeleteProductResponse {}
+
+message GetProductBySKURequest {
+  string sku = 1;
+}
+
+message GetProductBySKUResponse {
+  Product product =1;
+}

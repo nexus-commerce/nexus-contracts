@@ -1,0 +1,78 @@
+syntax = "proto3";
+
+option go_package = "gen/v1/order";
+
+import "google/api/annotations.proto";
+
+package order.v1;
+
+service OrderService {
+  rpc CreateOrder(CreateOrderRequest) returns (CreateOrderResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/orders"
+      body: "*"
+    };
+  };
+  rpc GetOrder(GetOrderRequest) returns (GetOrderResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/orders/{id}"
+    };
+  };
+  rpc ListUserOrders(ListUserOrdersRequest) returns (ListUserOrdersResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/orders"
+    };
+  };
+}
+
+message OrderItem {
+  int64 product_id = 1;
+  int64 quantity = 2;
+  double price = 3;
+}
+
+message CreateOrderRequest {
+  string shipping_address = 1;
+  PaymentMethod payment_method = 2;
+  oneof payment_info {
+    string payment_intent_id = 3;
+  }
+}
+
+message CreateOrderResponse {
+  int64 id = 1;
+  string status = 2;
+}
+
+message GetOrderResponse {
+  int64 id = 1;
+  int64 user_id = 2;
+  Status status = 3;
+  repeated OrderItem items = 4;
+  double total_price = 5;
+  string shipping_address = 6;
+}
+
+message GetOrderRequest {
+  int64 id = 1;
+}
+
+message ListUserOrdersRequest {}
+
+message ListUserOrdersResponse {
+  repeated GetOrderResponse orders = 1;
+}
+
+enum Status {
+  STATUS_UNSPECIFIED = 0;
+  STATUS_PENDING = 1;
+  STATUS_PAID = 2;
+  STATUS_CONFIRMED = 3;
+  STATUS_CANCELLED = 4;
+}
+
+enum PaymentMethod {
+  PAYMENT_METHOD_UNSPECIFIED = 0;
+  PAYMENT_METHOD_CARD = 1;
+  PAYMENT_METHOD_ON_DELIVERY = 2;
+}
