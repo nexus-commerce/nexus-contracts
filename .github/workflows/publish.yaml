@@ -24,7 +24,7 @@ jobs:
         run: cat buf.gen.yaml
 
       - name: Generate Go code from Protobuf (Verbose)
-        run: buf generate proto -v # Додали -v для детального виводу
+        run: buf generate proto --include-imports -v # Додали -v для детального виводу
 
       - name: Show directory contents after generate
         run: ls -R
