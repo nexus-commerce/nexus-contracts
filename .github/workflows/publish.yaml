@@ -23,6 +23,9 @@ jobs:
       - name: Generate Go code from Protobuf
         run: buf generate
 
+      - name: Show directory contents after generate
+        run: ls -R
+
       - name: Push generated code to nexus-contracts-go
         run: |
           # Налаштовуємо Git з токеном для аутентифікації
