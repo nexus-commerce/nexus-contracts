@@ -39,20 +39,24 @@ jobs:
           git clone https://${{ secrets.GH_PAT }}@github.com/nexus-commerce/nexus-contracts-go.git ../nexus-contracts-go
           
           # Копіюємо згенерований код, замінюючи старий
-          # 'gen' - це шлях, куди buf згенерував код, вказаний у buf.gen.yaml
           cp -r gen/* ../nexus-contracts-go/
           
           cd ../nexus-contracts-go
           
-          # Якщо змін немає, виходимо
-          if git diff --quiet; then
+          # ✅ ВИПРАВЛЕНА ПЕРЕВІРКА:
+          # Перевіряємо, чи є взагалі будь-які зміни (включно з новими файлами)
+          if [ -z "$(git status --porcelain)" ]; then
             echo "No changes to commit."
             exit 0
           fi
           
           # Створюємо та пушимо коміт і тег
           git add .
-          git commit -m "Update generated Go module to version ${{ github.ref_name }}"
+          git commit -m "feat(gen): sync generated Go module to version ${{ github.ref_name }}"
           git tag ${{ github.ref_name }} # Створюємо такий самий тег, як і в contracts
-          git push origin main
+          
+          # Оскільки репозиторій може бути порожнім, 'main' може не існувати.
+          # Ця команда безпечно створить 'main' або запушить у 'main', якщо він є.
+          git push origin HEAD:main 
+          
           git push origin ${{ github.ref_name }}
