@@ -33,8 +33,8 @@ jobs:
           git clone https://${{ secrets.GH_PAT }}@github.com/nexus-commerce/nexus-contracts-go.git ../nexus-contracts-go
           
           # Копіюємо згенерований код, замінюючи старий
-          # 'gen/go' - це шлях, куди buf згенерував код, вказаний у buf.gen.yaml
-          cp -r gen/go/* ../nexus-contracts-go/
+          # 'gen' - це шлях, куди buf згенерував код, вказаний у buf.gen.yaml
+          cp -r gen/* ../nexus-contracts-go/
           
           cd ../nexus-contracts-go
           
