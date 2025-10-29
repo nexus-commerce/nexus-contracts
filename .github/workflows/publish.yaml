@@ -20,8 +20,11 @@ jobs:
       - name: Set up Buf
         uses: bufbuild/buf-setup-action@v1
 
-      - name: Generate Go code from Protobuf
-        run: buf generate
+      - name: Show buf.gen.yaml content
+        run: cat buf.gen.yaml
+
+      - name: Generate Go code from Protobuf (Verbose)
+        run: buf generate proto -v # Додали -v для детального виводу
 
       - name: Show directory contents after generate
         run: ls -R
