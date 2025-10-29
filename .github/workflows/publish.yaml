@@ -46,6 +46,8 @@ jobs:
 
           go mod init github.com/nexus-commerce/nexus-contracts-go || true
 
+          go mod edit -replace=github.com/nexus-commerce/nexus-contracts-go=./
+
           go mod tidy
           
           # Перевіряємо, чи є взагалі будь-які зміни (включно з новими файлами)
