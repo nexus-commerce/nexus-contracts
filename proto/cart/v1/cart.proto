@@ -12,7 +12,7 @@ service ShoppingCartService {
       get: "/api/v1/cart"
     };
   };
-  rpc AddItem(AddItemRequest) returns (AddItemResponse) {
+  rpc AddItem(AddItemRequest) returns (AddItem) {
     option (google.api.http) = {
       post: "/api/v1/cart/items"
       body: "*"
@@ -58,7 +58,7 @@ message AddItemRequest {
   int32 quantity = 2;
 }
 
-message AddItemResponse {}
+message AddItem {}
 
 message UpdateItemRequest {
   string sku = 1;
