@@ -1,0 +1,17 @@
+name: Protobuf Linting
+
+on:
+  push: # Запускається на push в будь-яку гілку
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest # Використовуємо останню версію Ubuntu
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4 # Крок для завантаження коду репозиторію
+
+      - name: Set up Buf
+        uses: bufbuild/buf-setup-action@v1 # Крок для встановлення 'buf' CLI
+
+      - name: Run Buf lint
+        run: buf lint # Виконання команди лінтингу
