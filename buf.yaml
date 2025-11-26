@@ -7,8 +7,8 @@ lint:
   use:
     - STANDARD
     - UNARY_RPC
+  ignore:
+    - proto/google
 breaking:
   use:
     - FILE
-deps:
-  - buf.build/googleapis/googleapis
