@@ -213,13 +213,12 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/GetPaymentsResponse'
-    /api/v1/payments/initiate:
         post:
             tags:
                 - PaymentService
             operationId: PaymentService_ProcessPayment
             security:
-                - bearerAuth: []
+                - bearerAuth: [ ]
             requestBody:
                 content:
                     application/json:
@@ -233,6 +232,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/ProcessPaymentResponse'
+
     /api/v1/products:
         get:
             tags:
