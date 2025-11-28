@@ -12,3 +12,5 @@ lint:
 breaking:
   use:
     - FILE
+deps:
+  - buf.build/grpc-ecosystem/grpc-gateway
