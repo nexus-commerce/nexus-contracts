@@ -3,6 +3,7 @@ syntax = "proto3";
 option go_package = "gen/v1/user";
 
 import "google/api/annotations.proto";
+import "google/protobuf/field_mask.proto";
 
 package user.v1;
 
@@ -26,10 +27,17 @@ service UserService {
   };
   rpc UpdateProfile(UpdateProfileRequest) returns (UpdateProfileResponse) {
     option (google.api.http) = {
-      put: "/api/v1/users/profile"
+      patch: "/api/v1/users/profile"
       body: "*"
     };
   };
+}
+
+message User {
+  int64 id = 1;
+  string first_name = 2;
+  string last_name = 3;
+  string email = 4;
 }
 
 message RegisterRequest {
@@ -41,7 +49,7 @@ message RegisterRequest {
 }
 
 message RegisterResponse {
-  int64 user_id = 1;
+  User user = 1;
 }
 
 message AuthenticateRequest {
@@ -56,16 +64,14 @@ message AuthenticateResponse {
 message GetProfileRequest {}
 
 message GetProfileResponse {
-  int64 user_id = 1;
-  string email = 2;
-  string first_name = 3;
-  string last_name = 4;
+  User user = 1;
 }
 
 message UpdateProfileRequest {
-  string email = 1;
-  string first_name = 2;
-  string last_name = 3;
+  User user = 1;
+  google.protobuf.FieldMask update_mask = 2;
 }
 
-message UpdateProfileResponse {}
+message UpdateProfileResponse {
+  User user = 1;
+}

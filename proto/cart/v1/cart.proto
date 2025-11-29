@@ -58,14 +58,18 @@ message AddItemRequest {
   int32 quantity = 2;
 }
 
-message AddItemResponse {}
+message AddItemResponse {
+  CartItem item = 1;
+}
 
 message UpdateItemRequest {
   string sku = 1;
   int32 quantity = 2;
 }
 
-message UpdateItemResponse {}
+message UpdateItemResponse {
+  CartItem item = 1;
+}
 
 message RemoveItemRequest {
   string sku = 1;

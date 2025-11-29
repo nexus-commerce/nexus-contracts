@@ -21,14 +21,6 @@ service PaymentService {
   };
 }
 
-message ProcessPaymentRequest {}
-
-message ProcessPaymentResponse {
-  string client_secret = 1;
-  float amount = 2;
-  string currency = 3;
-}
-
 message Payment {
   int64 id = 1;
   float amount = 2;
@@ -37,6 +29,13 @@ message Payment {
   google.protobuf.Value gateway_transaction_id = 5;
   string payment_method = 6;
   int64 order_id = 7;
+}
+
+message ProcessPaymentRequest {}
+
+message ProcessPaymentResponse {
+  string client_secret = 1;
+  Payment payment = 2;
 }
 
 message GetPaymentsRequest {}
