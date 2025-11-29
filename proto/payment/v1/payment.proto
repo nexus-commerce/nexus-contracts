@@ -24,10 +24,10 @@ service PaymentService {
 message Payment {
   int64 id = 1;
   float amount = 2;
-  string currency = 3;
-  string status = 4;
+  Currency currency = 3;
+  Status status = 4;
   google.protobuf.Value gateway_transaction_id = 5;
-  string payment_method = 6;
+  PaymentMethod payment_method = 6;
   int64 order_id = 7;
 }
 
@@ -42,4 +42,23 @@ message GetPaymentsRequest {}
 
 message GetPaymentsResponse {
   repeated Payment payments = 1;
+}
+
+enum Status {
+  STATUS_UNSPECIFIED = 0;
+  STATUS_PENDING = 1;
+  STATUS_COMPLETED = 2;
+  STATUS_FAILED = 3;
+  STATUS_REFUNDED = 4;
+}
+
+enum PaymentMethod {
+  PAYMENT_METHOD_UNSPECIFIED = 0;
+  PAYMENT_METHOD_CARD = 1;
+  PAYMENT_METHOD_ON_DELIVERY = 2;
+}
+
+enum Currency {
+  CURRENCY_UNSPECIFIED = 0;
+  CURRENCY_USD = 1;
 }
