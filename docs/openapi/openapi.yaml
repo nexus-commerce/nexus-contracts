@@ -6,6 +6,17 @@ info:
     title: Nexus Commerce Platform API
     description: Nexus Commerce Platform API Documentation
     version: 0.0.1
+    contact:
+        name: Nexus Support
+        url: https://nexus.com
+        email: support@nexus.com
+servers:
+    - url: http://localhost:{port}
+      description: Local Development Server
+      variables:
+        port:
+            default: "8080"
+            description: "Port for the local server"
 paths:
     /api/v1/auth/login:
         post:
@@ -48,6 +59,8 @@ paths:
             tags:
                 - ShoppingCartService
             operationId: ShoppingCartService_GetCart
+            security:
+                - bearerAuth: [ ]
             responses:
                 "200":
                     description: OK
@@ -59,6 +72,8 @@ paths:
             tags:
                 - ShoppingCartService
             operationId: ShoppingCartService_ClearCart
+            security:
+                - bearerAuth: [ ]
             responses:
                 "200":
                     description: OK
@@ -71,6 +86,8 @@ paths:
             tags:
                 - ShoppingCartService
             operationId: ShoppingCartService_AddItem
+            security:
+                - bearerAuth: [ ]
             requestBody:
                 content:
                     application/json:
@@ -89,6 +106,8 @@ paths:
             tags:
                 - ShoppingCartService
             operationId: ShoppingCartService_RemoveItem
+            security:
+                - bearerAuth: [ ]
             parameters:
                 - name: sku
                   in: path
@@ -106,6 +125,8 @@ paths:
             tags:
                 - ShoppingCartService
             operationId: ShoppingCartService_UpdateItem
+            security:
+                - bearerAuth: [ ]
             parameters:
                 - name: sku
                   in: path
@@ -130,6 +151,8 @@ paths:
             tags:
                 - OrderService
             operationId: OrderService_ListUserOrders
+            security:
+                - bearerAuth: [ ]
             responses:
                 "200":
                     description: OK
@@ -141,6 +164,8 @@ paths:
             tags:
                 - OrderService
             operationId: OrderService_CreateOrder
+            security:
+                - bearerAuth: [ ]
             requestBody:
                 content:
                     application/json:
@@ -159,6 +184,8 @@ paths:
             tags:
                 - OrderService
             operationId: OrderService_GetOrder
+            security:
+                - bearerAuth: [ ]
             parameters:
                 - name: id
                   in: path
@@ -177,6 +204,8 @@ paths:
             tags:
                 - PaymentService
             operationId: PaymentService_GetPayments
+            security:
+                - bearerAuth: [ ]
             responses:
                 "200":
                     description: OK
@@ -188,6 +217,8 @@ paths:
             tags:
                 - PaymentService
             operationId: PaymentService_ProcessPayment
+            security:
+                - bearerAuth: [ ]
             requestBody:
                 content:
                     application/json:
@@ -232,6 +263,8 @@ paths:
             tags:
                 - ProductCatalogService
             operationId: ProductCatalogService_CreateProduct
+            security:
+                - bearerAuth: [ ]
             requestBody:
                 content:
                     application/json:
@@ -267,6 +300,8 @@ paths:
             tags:
                 - ProductCatalogService
             operationId: ProductCatalogService_DeleteProduct
+            security:
+                - bearerAuth: [ ]
             parameters:
                 - name: id
                   in: path
@@ -284,6 +319,8 @@ paths:
             tags:
                 - ProductCatalogService
             operationId: ProductCatalogService_UpdateProduct
+            security:
+                - bearerAuth: [ ]
             parameters:
                 - name: id
                   in: path
@@ -308,6 +345,8 @@ paths:
             tags:
                 - UserService
             operationId: UserService_GetProfile
+            security:
+                - bearerAuth: [ ]
             responses:
                 "200":
                     description: OK
@@ -319,6 +358,8 @@ paths:
             tags:
                 - UserService
             operationId: UserService_UpdateProfile
+            security:
+                - bearerAuth: [ ]
             requestBody:
                 content:
                     application/json:
@@ -575,8 +616,6 @@ components:
         UpdateItemRequest:
             type: object
             properties:
-                sku:
-                    type: string
                 quantity:
                     type: integer
                     format: int32
@@ -591,10 +630,12 @@ components:
                 product:
                     $ref: '#/components/schemas/Product'
                 update_mask:
-                    type: string
-                    format: field-mask
-                id:
-                    type: string
+                    type: object
+                    example:
+                        paths:
+                            - name
+                            - price
+                            - stock_quantity
         UpdateProductResponse:
             type: object
             properties:
@@ -606,8 +647,12 @@ components:
                 user:
                     $ref: '#/components/schemas/User'
                 update_mask:
-                    type: string
-                    format: field-mask
+                    type: object
+                    example:
+                        paths:
+                            - first_name
+                            - last_name
+                            - email
         UpdateProfileResponse:
             type: object
             properties:
@@ -624,6 +669,11 @@ components:
                     type: string
                 email:
                     type: string
+    securitySchemes:
+        bearerAuth:
+            type: http
+            scheme: bearer
+            bearerFormat: JWT
 tags:
     - name: OrderService
     - name: PaymentService
