@@ -29,6 +29,7 @@ message Payment {
   google.protobuf.Value gateway_transaction_id = 5;
   string payment_method = 6;
   int64 order_id = 7;
+  int64 created_at = 8;
 }
 
 message ProcessPaymentRequest {}
