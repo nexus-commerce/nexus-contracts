@@ -33,6 +33,12 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/AuthenticateResponse'
+                "400":
+                    description: Invalid login data
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/BadRequestErrorResponse'
                 "401":
                     description: Wrong password or user does not exist
                     content:
@@ -65,7 +71,7 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/RegisterResponse'
                 "400":
-                    description: Password and confirmation do not match
+                    description: Password and confirmation do not match or invalid registration data
                     content:
                         application/json:
                             schema:
@@ -153,6 +159,12 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/AddItemResponse'
+                "400":
+                    description: Invalid SKU or quantity
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/BadRequestErrorResponse'
                 "401":
                     description: Request lacks valid authentication credentials
                     content:
@@ -228,6 +240,12 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/UpdateItemResponse'
+                "400":
+                    description: Invalid SKU or quantity
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/BadRequestErrorResponse'
                 "401":
                     description: Request lacks valid authentication credentials
                     content:
@@ -461,6 +479,12 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/CreateProductResponse'
+                "400":
+                    description: Invalid product data
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/BadRequestErrorResponse'
                 "401":
                     description: Request lacks valid authentication credentials
                     content:
@@ -559,6 +583,12 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/UpdateProductResponse'
+                "400":
+                    description: Invalid product data
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/BadRequestErrorResponse'
                 "401":
                     description: Request lacks valid authentication credentials
                     content:
@@ -650,6 +680,9 @@ components:
     schemas:
         AddItemRequest:
             type: object
+            required:
+                - sku
+                - quantity
             properties:
                 sku:
                     type: string
@@ -663,6 +696,9 @@ components:
                     $ref: '#/components/schemas/CartItem'
         AuthenticateRequest:
             type: object
+            required:
+                - email
+                - password
             properties:
                 email:
                     type: string
@@ -696,6 +732,9 @@ components:
             properties: {}
         CreateOrderRequest:
             type: object
+            required:
+                - shipping_address
+                - payment_method
             properties:
                 shipping_address:
                     type: string
@@ -846,6 +885,11 @@ components:
                     $ref: '#/components/schemas/Payment'
         Product:
             type: object
+            required:
+                - sku
+                - name
+                - price
+                - stock_quantity
             properties:
                 id:
                     type: string
@@ -872,6 +916,12 @@ components:
                 is_active:
                     type: boolean
         RegisterRequest:
+            required:
+                - first_name
+                - last_name
+                - email
+                - password
+                - password_confirmation
             type: object
             properties:
                 first_name:
